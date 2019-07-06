@@ -28,12 +28,20 @@ class _LocationScreenState extends State<LocationScreen> {
 
   void updateUI(dynamic weatherData) {
     setState(() {
-      double temp = weatherData['main']['temp'];
-      temperature = temp.toInt();
-      var condition = weatherData['weather'][0]['id'];
-      weatherIcon = weather.getWeatherIcon(condition);
-      message = weather.getMessage(temperature);
-      cityName = weatherData['name'];
+      if (weatherData == null) {
+        // reason : api fail or location turned off ...
+        temperature = 0;
+        weatherIcon = 'Error';
+        message = "Unable to get weather data";
+        cityName = '';
+      } else {
+        double temp = weatherData['main']['temp'];
+        temperature = temp.toInt();
+        var condition = weatherData['weather'][0]['id'];
+        weatherIcon = weather.getWeatherIcon(condition);
+        message = weather.getMessage(temperature);
+        cityName = weatherData['name'];
+      }
     });
   }
 
